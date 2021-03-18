@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">Log-Containers</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      {{#if usuario}}
+      {{#if usuario.rol}}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Registro</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/links">Clientes</a>
+          <a class="dropdown-item" href="/links/listaContainer/:id">Productos</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Usuario</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Operaciones
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/links/add">Agregar Cliente</a>
+          <a class="dropdown-item" href="/links/agregarContainer">Agregar Contenedor</a>
+          <a class="dropdown-item" href="#">Agregar Terminal</a>
+          <a class="dropdown-item" href="#">Agregar Transporte</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/links/venta">Venta</a>
+          <a class="dropdown-item" href="#">Consultas</a>
+        </div>
+      </li>
+      {{/if}}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Personas
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/links/persona/:id">Mis Datos</a>
+          <a class="dropdown-item" href="/links/persona/:id">Mis Productos</a>
+        <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/links/listaContainer/:id">Productos</a>
+        </div>
+      </li>
+      <li class="nav-itme">
+        <a href="/salir" class="nav-link">Salir</a>
+      </li>
+      {{else}}
+      <li class="nav-item">
+        <a href="/ingreso" class="nav-link">Loguearse</a>
+      </li>
+      <li class="nav-item">
+        <a href="/registro" class="nav-link">Registrarse</a>
+      </li>
+      {{/if}}
+    </ul>
+  </div>
+</nav>

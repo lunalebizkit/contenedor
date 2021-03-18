@@ -1,0 +1,30 @@
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <h3>Agregar Container </h3>
+        <tr>
+            <th scope="col">Numero</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Capacidad</th>
+            <th scope="col">Tara</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <form action="/links/agregarContainer" method="POST">
+                <td><input type="text"  class="form-control" name="NroContenedor"
+                        placeholder="Numero Contenedor"></td>
+                <td><input type="text" class="form-control" name="marca"
+                        placeholder="Marca"></td>
+                <td><input type="number" min="20" max="40" step="20" class="form-control" name="IdCapacidad"
+                        placeholder="Capacidad"></td>
+                        <td><input type="text" class="form-control" name="Tara"
+                        placeholder="Tara"></td>
+                <td>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block"> Guardar</button>
+                </td>
+    </tbody>
+    </form>
+    </tr>
+    </tbody>
+</table>

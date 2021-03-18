@@ -1,0 +1,25 @@
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <h3>Agregar datos de contacto </h3>
+        <tr>
+            <th scope="col">Telefono</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Opcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <form action="/links/agregarContacto/{{cliente.id}}" method="POST">
+                <td><input type="text"  class="form-control" name="telefono"
+                        placeholder="Telefono"></td>
+                <td><input type="text" class="form-control" name="email"
+                        placeholder="E-mail"></td>
+                <td>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block"> Guardar</button>
+                </td>
+    </tbody>
+    </form>
+    </tr>
+    </tbody>
+</table>

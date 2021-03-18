@@ -1,0 +1,27 @@
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <h3>Nuevo Cliente </h3>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Cuit-Cuil-Dni</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Contraseña</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <form action="/links/add" method="POST">
+                <td><input type="text" class="form-control" name="nombre" placeholder="Nombre y Apellido" required autofocus></td>
+                <td> <input type="text" class="form-control" name="direccion" placeholder="Direccion" required autofocus></td>
+                <td><input type="text" class="form-control" name="cuit" placeholder="cuit-cuil-dni" required autofocus></td>
+                <td> <input type="text" class="form-control" name="usuario" placeholder="Usuario" required autofocus></td>
+                <td> <input type="text" class="form-control" name="contrasenia" placeholder="Contraseña" required autofocus></td>
+                <td><button class="btn btn-success btn-block"> Guardar</button></td>
+                    
+            </form>
+        </tr>
+    </tbody>
+</table>

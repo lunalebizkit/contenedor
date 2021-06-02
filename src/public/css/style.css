@@ -11,7 +11,7 @@ body {
 
 .masthead {
     color: rgba(1, 0, 5, 0.979);
-    padding-top: 4rem;
+    padding-top: 1rem;
     width: 100%;
     min-height: 35rem;
     height: 100%;
@@ -19,6 +19,7 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    
 }
 
 
@@ -36,7 +37,7 @@ footer {
 .navbar {
     padding-top:  6px ;
     padding-bottom: 0;
-    height: 33px;
+    height: 3rem;
     background-color: #040100;
   }
   .navbar .navbar-brand {

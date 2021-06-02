@@ -1,27 +1,28 @@
-<div class="container p-5">
+<div class="container p-3">
   <div class="row">
     <div class="col-md-5 mx-auto">
       <div class="card bg-secondary text-white">
-        <div class="card-body"> DATOS PERSONALES
-             <p class="m-2">Usuario:  {{usuario.usuario}}</p>
-             <p class="m-2">Nombre:   {{usuario.nombre}}</p>
-             <p class="m-2">Dirección:  {{usuario.direccion}}</p>
-             <p class="m-2">CUIT-CUIL-DNI:  {{usuario.cuit}}</p>
+        <div class="card-body mx-auto"> <b>DATOS PERSONALES</b>
+             <p class= "m-2"><b>Usuario:</b>  
+             <span>{{usuario.usuario}}</span> </p>
+             <p class="m-2"> <b>Nombre: </b>  {{usuario.nombre}}</p>
+             <p class="m-2"><b>Dirección:  </b>{{usuario.direccion}}</p>
+             <p class="m-2"><b>CUIT-CUIL-DNI:  </b>{{usuario.cuit}}</p>
             {{!-- <p>{{timeago created_at}}</p> --}}
             {{!-- <a href="/links/delete/{{id}}" class="btn btn-danger">Borrar link</a> --}}
-            <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
+            <a href="/links/editar/{{usuarios.id}}" class="btn btn-success btn-block">Editar</a>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="container p-5">
+<div class="container p-3">
   <div class="row">
     <div class="col-md-3 mx-auto">
       <div class="card bg-secondary text-white">
-        <div class="card-body"> TELEFONO CONTACTO
+        <div class="card-body mx-auto"> <b>TELEFONO CONTACTO</b>
           {{#each telefono}}
-             <p class="m-2">Telefono:  {{telefono}}</p>
+             <p class="m-2"><b>Telefono:  </b>{{telefono}}</p>
            {{/each}} 
             <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
             <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
@@ -30,13 +31,13 @@
     </div>
   </div>
 </div>
-<div class="container p-5">
+<div class="container p-3">
   <div class="row">
     <div class="col-md-5 mx-auto">
       <div class="card bg-secondary text-white">
-        <div class="card-body"> E-MAIL CONTACTO
+        <div class="card-body mx-auto"> <b>E-MAIL CONTACTO</b>
           {{#each email}}
-             <p class="m-2">E-mail:  {{email}}</p>
+             <p class="m-2"><b>E-mail:  </b>{{email}}</p>
           {{/each}}
             <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
             <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>

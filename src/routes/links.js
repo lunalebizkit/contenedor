@@ -31,15 +31,15 @@ router.get('/persona/:id', isLoggedIn, async (req, res) =>{
 });
 //Lista de clientes
 
- router.get('/', isLoggedIn,  async (req, res) => {
-      const user= await db.query('SELECT * FROM usuario WHere rol =? ', 1);
-      let usuario = await db.query('SELECT * FROM usuario');
+ router.get('/lista', isLoggedIn,  async (req, res) => {
+    //   const user= await db.query('SELECT * FROM usuario WHere rol =? ', 1);
+      let usuarios = await db.query('SELECT * FROM usuario');
      
       const clientEmail = await db.query('SELECT * FROM usuario_email');
       const clienTelefono = await db.query('SELECT * FROM usuario_telefono');
-     res.render('links/lista', { usuario, clientEmail, clienTelefono, user: user[0]});
+     res.render('links/lista', { usuarios, clientEmail, clienTelefono });
      (async () => {
-        const csv =await new objectsACsv(usuario).toDisk('./src/public/csv.csv', {append: false });
+        const csv =await new objectsACsv(usuarios).toDisk('./src/public/csv.csv', {append: false });
          //console.log(await csv.toString());
     })();
      
@@ -143,7 +143,7 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
      await db.query('DELETE FROM usuario_email WHERE usuario_id = ?', [id]);
      await db.query('DELETE FROM usuario_telefono WHERE usuario_id = ?', [id]);
     req.flash('success', 'Cliente eliminado');
-     res.redirect('/links');
+     res.redirect('/links/lista');
  });
 
 //Ventas

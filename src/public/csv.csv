@@ -1,11 +1,8 @@
 id,nombre,direccion,cuit,rol,usuario,contrasenia
 9,Ale Luna,dorrego s/n maipu,32812054,1,lunale,$2a$05$crE7q9Ysm2zrpW/P5WObluaMnNfAfg/flu0a9n1xwulKGD./1zboa
 11,Italo Luna,1 de Mayo 789,    38487521,,italo,$2a$05$JQStMPltx3WnQNYLN156I.xJTQjdkfhtfZ0MWVYo2LA2yNi9Ev5By
-16,Carla Morrison,San juan 89,65784512,,carla,$2a$05$1/AKtokvlHw7SPKMffvvLOIV8yTLKL513wOVfblyAQv2IfYZOQC1a
-17,Eliana Beatriz Cortez,Florentino Ameghino ,33760263,,Eliana,$2a$05$HADa3ggBEfAdPUts0jlzOuD5aveoKYiY50AYIdceBX/MvZ8CVoag2
-19,Francisco Pancho,Pucara 5632,      16878545,,pancho,$2a$05$2cvf92pq2k0z55KiZE3qe.iVf9fl.o1GbZ5aHifYMqAlKhFK46bHi
 20,Antonella Nucci,Independencia 4320 ,38829197,,antito,$2a$05$CUWDb6m//rbX/3gw4TGrje2GLhGpglwUITY.Cgi2OxZky8czKjyni
 21,Thiago Luna,Irala 8910, 49765734,,thiaguis,$2a$05$9ly6To570SgMgN1pXc8N9uWuSjfY6Df.5LJO.AwI4Q9.HoQO0XywC
 22,Maria Ilda Vega,Dolores Pratt de Huisis,16121693,,marivega,$2a$05$wWhwZjBoAdz/jqa2cL3bkuwTIhIQO52kY3zd/dnCsuFJJWlxnOV4m
 23,Angel Luna,Pucara 12,36987654,,angelito,$2a$05$/xG.yjJB2UOxAGez5jejLuqJclFMPptApZwLAEYR59yYV62UB1Iae
-24,0,0,0,,0,$2a$05$5c2FN/N7kJMPSIFY..eLYuDdXo9Vqf/nTNRT8rejm/bcKSFgEJXfm
+24,Romina Abel,San Martin42,   31854535,,rominita,$2a$05$B74CGQ1HuYZkKg8FoQIhGeynFy.VIVzxqlwPKznG.xCk26RBlSdKy

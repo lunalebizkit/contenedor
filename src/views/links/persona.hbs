@@ -1,45 +1,44 @@
-<div class="container p-5">
-  <div class="row">
-    <div class="col-md-5 mx-auto">
+<div class="container py-5">
+  <div class="row justify-content-around">
+    <div class="col-4">
       <div class="card bg-secondary text-white">
-        <div class="card-body"> DATOS PERSONALES
-             <p class="m-2">Usuario:  {{usuario.usuario}}</p>
-             <p class="m-2">Nombre:   {{usuario.nombre}}</p>
-             <p class="m-2">Dirección:  {{usuario.direccion}}</p>
-             <p class="m-2">CUIT-CUIL-DNI:  {{usuario.cuit}}</p>
-            {{!-- <p>{{timeago created_at}}</p> --}}
-            {{!-- <a href="/links/delete/{{id}}" class="btn btn-danger">Borrar link</a> --}}
-            <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
+        <div class="card-header text-center">
+        <span><u>DATOS PERSONALES</u></span>
+        </div>
+        <div class="card-body"> 
+          <p class="m-2">Usuario: {{usuario.usuario}}</p>
+          <p class="m-2">Nombre: {{usuario.nombre}}</p>
+          <p class="m-2">Dirección: {{usuario.direccion}}</p>
+          <p class="m-2">CUIT-CUIL-DNI: {{usuario.cuit}}</p>
+          <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="container p-5">
-  <div class="row">
-    <div class="col-md-3 mx-auto">
+    <div class="col-4">
       <div class="card bg-secondary text-white">
-        <div class="card-body"> TELEFONO CONTACTO
+        <div class="card-header text-center">
+        <span><u>TELEFONO CONTACTO</u></span>
+        </div>
+        <div class="card-body"> 
           {{#each telefono}}
-             <p class="m-2">Telefono:  {{telefono}}</p>
-           {{/each}} 
-            <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
-            <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
+          <p class="m-2">Telefono: {{telefono}}</p>
+          {{/each}}
+          <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
+          <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="container p-5">
-  <div class="row">
-    <div class="col-md-5 mx-auto">
+    <div class="col-4">
       <div class="card bg-secondary text-white">
-        <div class="card-body"> E-MAIL CONTACTO
+         <div class="card-header text-center">
+        <span><u>E-MAIL CONTACTO</u></span>
+        </div>
+        <div class="card-body"> 
           {{#each email}}
-             <p class="m-2">E-mail:  {{email}}</p>
+          <p class="m-2">E-mail: {{email}}</p>
           {{/each}}
-            <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
-            <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
+          <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
+          <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
         </div>
       </div>
     </div>

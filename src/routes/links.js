@@ -39,10 +39,10 @@ router.get('/lista', isLoggedIn, async (req, res) => {
     const clientEmail = await db.query('SELECT * FROM usuario_email');
     const clienTelefono = await db.query('SELECT * FROM usuario_telefono');
     res.render('links/lista', { usuarios, clientEmail, clienTelefono });
-    (async () => {
-        const csv = await new objectsACsv(usuarios).toDisk('./src/public/csv.csv', { append: false });
-        //console.log(await csv.toString());
-    })();
+    // (async () => {
+    //     const csv = await new objectsACsv(usuarios).toDisk('./src/public/csv.csv', { append: false });
+    //     //console.log(await csv.toString());
+    // })();
 
 });
 

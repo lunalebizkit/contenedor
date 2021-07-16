@@ -1,7 +1,11 @@
 <div class="container">
   <table class="table table-bordered">
     <thead class="thead-dark">
+<<<<<<< HEAD
       <h3>Hola {{user.nombre}} </h3> <a href="/src/public/csv.csv" target="_blank" download="archivo.csv" class="btn btn-warning">Descargar Data</a>
+=======
+      <h3>Hola {{usuario.nombre}} </h3> <a href = '/src/public/csv.csv' download = "Tabla de Usuarios.csv" class="btn btn-warning">Descargar Data</a>
+>>>>>>> f6729a716b894e748ec293927b5406fc8224dac5
       <tr>
         <th scope="col"></th>
         <th scope="col">Nombre del Cliente</th>
@@ -11,7 +15,7 @@
         <th scope="col">Opciones</th>
       </tr>
     </thead>
-    {{#each usuario}}
+    {{#each usuarios}}
     <tbody>
       <tr>
         <th scope="row"></th>

@@ -1,73 +1,21 @@
-<script>
-    const DOMitems = document.querySelector('#items');
-    const DOMcarrito = document.querySelector('#carrito');
-    const DOMtotal = document.querySelector('#total');
-    const DOMbotonVaciar = document.querySelector('#boton-vaciar');
-
-    function renderizarProductos() {
-        {{producto}}.forEach((info) => {
-            // Estructura
-            const miNodo = document.createElement('div');
-            miNodo.classList.add('card', 'col-sm-4');
-            // Body
-            const miNodoCardBody = document.createElement('div');
-            miNodoCardBody.classList.add('card-body');
-            // Titulo
-            const miNodoTitle = document.createElement('h5');
-            miNodoTitle.classList.add('card-title');
-            miNodoTitle.textContent = info.NroContenedor;
-
-
-            // Precio
-            const miNodoPrecio = document.createElement('p');
-            miNodoPrecio.classList.add('card-text');
-            miNodoPrecio.textContent = info.IdCapacidad + 'Capacidad';
-            // Boton 
-            const miNodoBoton = document.createElement('button');
-            miNodoBoton.classList.add('btn', 'btn-primary');
-            miNodoBoton.textContent = '+';
-            miNodoBoton.setAttribute('marcador', info.NroContenedor);
-            miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
-            // Insertamos
-
-            miNodoCardBody.appendChild(miNodoTitle);
-            miNodoCardBody.appendChild(miNodoPrecio);
-            miNodoCardBody.appendChild(miNodoBoton);
-            miNodo.appendChild(miNodoCardBody);
-            DOMitems.appendChild(miNodo);
-        });
-    }
-
-    DOMbotonVaciar.addEventListener('click', vaciarCarrito);
-
-
-    renderizarProductos();
-</script>
 <div class="container">
-    <div class="row">
+
+    <form href="/links/factura/{{usuario.id}}" method="POST">
+    <button class="btn btn-success mb-2 mt-2" type="submit">Comprar!</button>
+    <div class="row row-cols-3 row-cols-md-3 g-4 mb-3">
         {{#each producto}}
-        <div class="col-sm-4 row">
-            <div class="card-head">{{marca}}</div>
-            <div class="card-body">{{NroContenedor}}</div>
-            <div class="card-footer">{{Tara}}</div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <label for="contenedor"><b>Contenedor: </b> {{marca}} <b>Capacidad: </b>{{IdCapacidad}} </label>
+                </div>
+                <div class="card-footer">
+                    <input type="checkbox" name="contenedor" value="{{NroContenedor}}" >
+                    <span><i>Lo quiero!</i> </span>
+                </div>
+            </div>
         </div>
-        <!-- Elementos generados a partir del JSON -->
-        <main id="items" class="col-sm-8 row"></main>
-        
         {{/each}}
-        <!-- Carrito -->
-      
     </div>
-    <div class="row">
-         <aside class="col-sm-4">
-            <h2>Carrito</h2>
-            <!-- Elementos del carrito -->
-            <ul id="carrito" class="list-group"></ul>
-            <hr>
-            <!-- Precio total -->
-            <p class="text-right">Total: <span id="total"></span>&euro;</p>
-            <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
-        </aside>
-    </div>
-     
+    </form>
 </div>

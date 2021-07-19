@@ -7,8 +7,7 @@ const objectsACsv = require('objects-to-csv');
 const { Result } = require('express-validator');
 const { send } = require('process');
 const { } = require('../lib/carrito');
-
-
+const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 
 //Agregar cliente
 router.get('/add', isLoggedIn, (req, res) => {
@@ -148,104 +147,39 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
 });
 
 //Ventas
-router.get('/venta', isLoggedIn, async (req, res) => {
+router.get('/venta/:id', isLoggedIn, async (req, res) => {
     const producto = await db.query('SELECT * FROM contenedor');
-    let carrito = [];
-    let total = 0;
-    console.info(producto);
-    
-        /* Dibuja todos los productos a partir de la base de datos. No confundir con el carrito */
-        
-        /* Evento para añadir un producto al carrito de la compra */
-        function anyadirProductoAlCarrito(evento) {
-            // Anyadimos el Nodo a nuestro carrito
-            carrito.push(evento.target.getAttribute('marcador'))
-            // Calculo el total
-            calcularTotal();
-            // Actualizamos el carrito 
-            renderizarCarrito();
-        
-        }
-        function renderizarCarrito() {
-            // Vaciamos todo el html
-            DOMcarrito.textContent = '';
-            // Quitamos los duplicados
-            const carritoSinDuplicados = [...new Set(carrito)];
-            // Generamos los Nodos a partir de carrito
-            carritoSinDuplicados.forEach((item) => {
-                // Obtenemos el item que necesitamos de la variable base de datos
-                const miItem = producto.filter((itemBaseDatos) => {
-                    // ¿Coincide las id? Solo puede existir un caso
-                    return itemBaseDatos.id === parseInt(item);
-                });
-                // Cuenta el número de veces que se repite el producto
-                const numeroUnidadesItem = carrito.reduce((total, itemId) => {
-                    // ¿Coincide las id? Incremento el contador, en caso contrario no mantengo
-                    return itemId === item ? total += 1 : total;
-                }, 0);
-                // Creamos el nodo del item del carrito
-                const miNodo = document.createElement('li');
-                miNodo.classList.add('list-group-item', 'text-right', 'mx-2');
-                miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${miItem[0].precio}€`;
-                // Boton de borrar
-                const miBoton = document.createElement('button');
-                miBoton.classList.add('btn', 'btn-danger', 'mx-5');
-                miBoton.textContent = 'X';
-                miBoton.style.marginLeft = '1rem';
-                miBoton.dataset.item = item;
-                miBoton.addEventListener('click', borrarItemCarrito);
-                // Mezclamos nodos
-                miNodo.appendChild(miBoton);
-                DOMcarrito.appendChild(miNodo);
-            });
-        }
-        /**
-                  * Evento para borrar un elemento del carrito
-                  */
-        function borrarItemCarrito(evento) {
-            // Obtenemos el producto ID que hay en el boton pulsado
-            const id = evento.target.dataset.item;
-            // Borramos todos los productos
-            carrito = carrito.filter((carritoId) => {
-                return carritoId !== id;
-            });
-            // volvemos a renderizar
-            renderizarCarrito();
-            // Calculamos de nuevo el precio
-            calcularTotal();
-        }
-        /**
-                * Calcula el precio total teniendo en cuenta los productos repetidos
-                */
-        function calcularTotal() {
-            // Limpiamos precio anterior
-            total = 0;
-            // Recorremos el array del carrito
-            carrito.forEach((item) => {
-                // De cada elemento obtenemos su precio
-                const miItem = producto.filter((itemBaseDatos) => {
-                    return itemBaseDatos.id === parseInt(item);
-                });
-                total = total + miItem[0].precio;
-            });
-            // Renderizamos el precio en el HTML
-            DOMtotal.textContent = total.toFixed(2);
-        }
-        
-        /**
-        * Varia el carrito y vuelve a dibujarlo
-        */
-        function vaciarCarrito() {
-            // Limpiamos los productos guardados
-            carrito = [];
-            // Renderizamos los cambios
-            renderizarCarrito();
-            calcularTotal();
-        }
-        
-        // Eventos
-       
     res.render('links/venta', { producto });
 });
+router.post('/venta/:id', isLoggedIn, async(req, res) =>{
+    const {contenedor}= req.body;
+    req.session.contenedor= contenedor
+    res.redirect('/links/factura/:id');
+});
+router.get('/factura/:id', async(req, res) =>{
+    const {id} = req.params;
+    let {contenedor}= req.session; 
+    let consulta= [];
+    if (contenedor instanceof Array) {
+       for (let i =0; i < contenedor.length; i ++) {
+        let producto= await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor[i]]);
+        consulta.push(producto[0]);}
+    }    
+    else {consulta= await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor]);};
+    req.session.contenedor = consulta;                                                                            
+    res.render('links/factura', {consulta});
+});
+router.post('/factura/:id', isLoggedIn, async(req, res)=>{
+    const {id}= req.params;
+    const {contenedor}= req.session;    
+    contenedor.forEach(async numero => {
+        console.info('el numero de cont es  ' + numero.NroContenedor);})
+    res.redirect('/links/misProductos/:id');
+});
+router.get('/misProductos/:id', isLoggedIn, async(req, res) =>{
+    const {id} = req.params;
+    res.render('links/misProductos');
+});
+
 module.exports = router;
 

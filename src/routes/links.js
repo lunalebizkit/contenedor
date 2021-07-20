@@ -6,7 +6,6 @@ const passport = require('passport');
 const objectsACsv = require('objects-to-csv');
 const { Result } = require('express-validator');
 const { send } = require('process');
-const { } = require('../lib/carrito');
 const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 
 //Agregar cliente
@@ -148,14 +147,18 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
 
 //Ventas
 router.get('/venta/:id', isLoggedIn, async (req, res) => {
+    const {id}= req.params;
     const producto = await db.query('SELECT * FROM contenedor');
     res.render('links/venta', { producto });
 });
 router.post('/venta/:id', isLoggedIn, async(req, res) =>{
+    const {id}= req.params;
     const {contenedor}= req.body;
     req.session.contenedor= contenedor
     res.redirect('/links/factura/:id');
 });
+
+//Confirmacion de facturas
 router.get('/factura/:id', async(req, res) =>{
     const {id} = req.params;
     let {contenedor}= req.session; 
@@ -171,13 +174,19 @@ router.get('/factura/:id', async(req, res) =>{
 });
 router.post('/factura/:id', isLoggedIn, async(req, res)=>{
     const {id}= req.params;
-    const {contenedor}= req.session;    
+    const {contenedor}= req.session;
+    let fecha= new Date(Date.now()).toLocaleDateString();
     contenedor.forEach(async numero => {
-        console.info('el numero de cont es  ' + numero.NroContenedor);})
+        const newFactura = {Tipo: 'A', Sucursal: 'Maipu', NroCliente: id, IdOperacion: 1, Precio: '' };
+        console.info(numero.NroContenedor);
+        console.info(fecha);})
     res.redirect('/links/misProductos/:id');
 });
+
+//Vista de mis productos
 router.get('/misProductos/:id', isLoggedIn, async(req, res) =>{
     const {id} = req.params;
+    const fecha= new Date();
     res.render('links/misProductos');
 });
 

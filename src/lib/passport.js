@@ -29,7 +29,7 @@ passport.use('local.registro', new localStrategy({
         passwordField: 'contrasenia',
         passReqToCallback: true
 }, async (req, usuario, contrasenia, done) => {
-    const {nombre, direccion, cuit}= req.body;
+    const {nombre, direccion, cuit, email}= req.body;
     const newUsuario = {
         nombre,
         direccion,
@@ -37,10 +37,22 @@ passport.use('local.registro', new localStrategy({
         usuario,
         contrasenia,
     };
-    newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
-    const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario]);
-    newUsuario.id= resultado.insertId;
-   return done(null, newUsuario);
+    const comprobar= await db.query('Select * from usuario Where usuario = ?', [usuario]);
+    const comprobarEmail = await db.query('SELECT * FROM usuario_email WHERE email =?', [email]);
+    if ((comprobar.length)> 0) {
+        return done(null, false, req.flash('mal', 'Usuario Existente!'));
+    }if ((comprobarEmail.length)>0) {
+        return done(null, false, req.flash('mal', 'Email Existente!'));
+    }else {
+        newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
+        const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario]);
+        const newEmail = { usuario_id: resultado.insertId, email };
+        await db.query('INSERT INTO usuario_email set ?', [newEmail]);
+        newUsuario.id= resultado.insertId;
+        return done(null, newUsuario);
+    }
+  
+  
 }));
 
 

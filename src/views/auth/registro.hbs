@@ -6,28 +6,32 @@
                     <h3>Crear Cuenta</h3>
                 </div>
                 <div class="card-body">
-                    <p class="m-0" style="text-align:left">* Campos Obligatorios</p>    
+                    <p class="m-0" style="text-align:left" ><FONT COLOR= "RED">* Campos Obligatorios</FONT></p>    
                     <form action="/registro" method="POST">
                         <div class="form-floating mb-3">
                             <input type="text" name="nombre" id="floatingNombre" placeholder="Nombre Completo" class="form-control" required>
-                            <label for="floatingNombre">Nombre Completo *</label>
+                            <label for="floatingNombre">Nombre Completo <FONT COLOR= "RED">*</FONT></label>
                         </div>
                          <div class="form-floating mb-3">
                             <input type="text" name="direccion" id="floatingDirec" placeholder=" " class="form-control" required>
-                            <label for="floatingDirec">Direccion *</label>
+                            <label for="floatingDirec">Direccion <FONT COLOR= "RED">*</FONT></label>
                         </div>
                         <div class="form-floating mb-3">
                              <input type="text" name="cuit"id="floatingCuit" placeholder="CUIT-CUIL-DNI" class="form-control" required>
-                             <label for="floatingCuit">CUIT-CUIL-DNI *</label>
+                             <label for="floatingCuit">CUIT-CUIL-DNI <FONT COLOR= "RED">*</FONT></label>
                         </div>
                         
                         <div class="form-floating mb-3">
                             <input type="text" name="usuario" id="floatingUsuario" placeholder="Usuario" class="form-control" required>
-                            <label for="floatingUsuario">Nombre de Usuario *</label>
+                            <label for="floatingUsuario">Nombre de Usuario <FONT COLOR= "RED">*</FONT></label>
+                        </div>
+                          <div class="form-floating mb-3">
+                            <input type="email" name="email" id="floatingUsuario" placeholder="Email" class="form-control" required>
+                            <label for="floatingUsuario">Correo Electronico <FONT COLOR= "RED">*</FONT></label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="password" name="contrasenia" id="floatingContra" placeholder="Contraseña" class="form-control" required>
-                            <label for="floatingContra">Contraseña *</label>
+                            <label for="floatingContra">Contraseña <FONT COLOR= "RED">*</FONT></label>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success btn-block">

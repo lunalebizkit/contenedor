@@ -165,7 +165,7 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
 //Ventas
 router.get('/venta/:id', isLoggedIn, async (req, res) => {
     const { id }= req.params;
-    const producto = await db.query('SELECT * FROM contenedor');
+    const producto = await db.query('SELECT * FROM contenedor where estado = "Disponible"');
     res.render('links/venta', { producto });
 });
 router.post('/venta/:id', isLoggedIn, async(req, res) =>{
@@ -199,13 +199,14 @@ router.post('/factura/:id', isLoggedIn, async(req, res)=>{
         let num= facturar.insertId;
         contenedor.forEach(async numero => {
             const detalle= await{Numero: num, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: numero.NroContenedor, precio: ''};
-            await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);})
+            await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);;
+            await db.query('Update contenedor set estado = "Vendido" where NroContenedor =?', numero.NroContenedor);})
     } else {
        const facturar= await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
-        let num= facturar.insertId;
         const nro = contenedor[0].NroContenedor;        
         const detalle= await{Numero: facturar.insertId, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: nro, precio: ''};
-        await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);}
+        await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);
+        await db.query('Update contenedor set estado = "Vendido" where NroContenedor =?', [nro]);}
   
     res.redirect('/links/misProductos/:id');
 });
@@ -213,7 +214,7 @@ router.post('/factura/:id', isLoggedIn, async(req, res)=>{
 //Vista de mis productos
 router.get('/misProductos/:id', isLoggedIn, async(req, res) =>{
     const {id} = req.user;
-    const misProductos= await db.query('Select * from encabezado_factura_venta inner join encabezado_detalle_venta on encabezado_factura_venta.Numero = encabezado_detalle_venta.Numero where encabezado_factura_venta.NroCliente = ?', [id]);
+    const misProductos= await db.query('Select * from encabezado_factura_venta inner join encabezado_detalle_venta on encabezado_factura_venta.Numero = encabezado_detalle_venta.Numero inner join contenedor on encabezado_detalle_venta.NroContenedor = contenedor.NroContenedor  where encabezado_factura_venta.NroCliente = ?', [id]);
     res.render('links/misProductos', {misProductos});
 });
 

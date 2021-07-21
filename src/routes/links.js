@@ -7,19 +7,37 @@ const objectsACsv = require('objects-to-csv');
 const { Result } = require('express-validator');
 const { send } = require('process');
 const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
+const helpers =require('../lib/helper');
 
 //Agregar cliente
 router.get('/add', isLoggedIn, (req, res) => {
     res.render('links/add');
 });
-router.post('/add', isLoggedIn, passport.authenticate('local.registro', {
-    successRedirect: '/links',
-    failureRedirect: '/registro',
-    failureFlash: true
-}), async (req, res) => {
-    req.flash('exito', 'Cliente agregado exitosamente');
-    res.redirect('/links');
+router.post('/add', isLoggedIn, async(req, res) => {
+    const {nombre, direccion, cuit, usuario, contrasenia}= req.body;   
+    const usuar= await db.query('Select * from usuario where usuario =?', [usuario]);
+    const cuit1= await db.query('Select * from usuario where cuit =?', [cuit]);
+    if ( (usuar.length) > 0) {
+        req.flash('mal', 'Usuario Existente!');
+        res.redirect('/links/add');
+    }  if ( (cuit1.length) > 0) {
+        req.flash('mal', 'CUIT-CUIL-DNI Existente!');
+        res.redirect('/links/add');
+    }else{
+        const newUsuario = {
+            nombre,
+            direccion,
+            cuit,
+            usuario,
+            contrasenia,
+        };
+        newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
+        const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario]);
+        req.flash('exito', 'Cliente agregado exitosamente');
+        res.redirect('/links/lista');
+    }   
 });
+
 // pagina de persona
 router.get('/persona/:id', isLoggedIn, async (req, res) => {
     const { id } = req.user;
@@ -33,7 +51,6 @@ router.get('/persona/:id', isLoggedIn, async (req, res) => {
 router.get('/lista', isLoggedIn, async (req, res) => {
     //   const user= await db.query('SELECT * FROM usuario WHere rol =? ', 1);
     let usuarios = await db.query('SELECT * FROM usuario');
-
     const clientEmail = await db.query('SELECT * FROM usuario_email');
     const clienTelefono = await db.query('SELECT * FROM usuario_telefono');
     res.render('links/lista', { usuarios, clientEmail, clienTelefono });

@@ -147,12 +147,12 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
 
 //Ventas
 router.get('/venta/:id', isLoggedIn, async (req, res) => {
-    const {id}= req.params;
+    const { id }= req.params;
     const producto = await db.query('SELECT * FROM contenedor');
     res.render('links/venta', { producto });
 });
 router.post('/venta/:id', isLoggedIn, async(req, res) =>{
-    const {id}= req.params;
+    const { id }= req.user;
     const {contenedor}= req.body;
     req.session.contenedor= contenedor
     res.redirect('/links/factura/:id');
@@ -160,7 +160,7 @@ router.post('/venta/:id', isLoggedIn, async(req, res) =>{
 
 //Confirmacion de facturas
 router.get('/factura/:id', async(req, res) =>{
-    const {id} = req.params;
+    const {id} = req.user;
     let {contenedor}= req.session; 
     let consulta= [];
     if (contenedor instanceof Array) {
@@ -176,18 +176,28 @@ router.post('/factura/:id', isLoggedIn, async(req, res)=>{
     const {id}= req.params;
     const {contenedor}= req.session;
     let fecha= new Date(Date.now()).toLocaleDateString();
-    contenedor.forEach(async numero => {
-        const newFactura = {Tipo: 'A', Sucursal: 'Maipu', NroCliente: id, IdOperacion: 1, Precio: '' };
-        console.info(numero.NroContenedor);
-        console.info(fecha);})
+    const newFactura = {Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroCliente: id, idOperacion:  1, total: '', Fecha: fecha, idEstadoFactura: 2 };
+    if ((contenedor.length) > 1) {
+        const facturar= await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
+        let num= facturar.insertId;
+        contenedor.forEach(async numero => {
+            const detalle= await{Numero: num, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: numero.NroContenedor, precio: ''};
+            await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);})
+    } else {
+       const facturar= await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
+        let num= facturar.insertId;
+        const nro = contenedor[0].NroContenedor;        
+        const detalle= await{Numero: facturar.insertId, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: nro, precio: ''};
+        await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);}
+  
     res.redirect('/links/misProductos/:id');
 });
 
 //Vista de mis productos
 router.get('/misProductos/:id', isLoggedIn, async(req, res) =>{
-    const {id} = req.params;
-    const fecha= new Date();
-    res.render('links/misProductos');
+    const {id} = req.user;
+    const misProductos= await db.query('Select * from encabezado_factura_venta inner join encabezado_detalle_venta on encabezado_factura_venta.Numero = encabezado_detalle_venta.Numero where encabezado_factura_venta.NroCliente = ?', [id]);
+    res.render('links/misProductos', {misProductos});
 });
 
 module.exports = router;

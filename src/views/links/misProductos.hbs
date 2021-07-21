@@ -1,0 +1,14 @@
+<div class="row row-cols-md-4 g-2 mt-2 mb-5">
+    {{#each misProductos}}
+    <div>
+    <div class="card border-success mb-1 " style="max-width: 18rem;">
+        <div class="card-header">Producto</div>
+        <div class="card-body text-success">
+            <h5 class="card-title">Contenedor {{NroContenedor}}</h5>
+            <p class="card-text">Numero de Factura: <b>{{Numero}}</b> Tipo: <b>{{Tipo}}</b> Fecha: <b>{{Fecha}}</b><br> Sucursal :
+                {{Sucursal}}.</p>
+        </div>
+    </div>
+    </div>
+    {{/each}}
+</div>

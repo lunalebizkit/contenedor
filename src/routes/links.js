@@ -8,6 +8,7 @@ const { Result } = require('express-validator');
 const { send } = require('process');
 const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 const helpers =require('../lib/helper');
+require('nodemailer');
 
 //Agregar cliente
 router.get('/add', isLoggedIn, (req, res) => {

@@ -9,7 +9,7 @@
                     <p class="m-0" style="text-align:left" ><FONT COLOR= "RED">* Campos Obligatorios</FONT></p>    
                     <form action="/registro" method="POST">
                         <div class="form-floating mb-3">
-                            <input type="text" name="nombre" id="floatingNombre" placeholder="Nombre Completo" class="form-control" required>
+                            <input type="text" name="nombre" id="floatingNombre" placeholder="Nombre Completo" class="form-control" pattern="[a-zA-Z]{2,40}" oninvalid="setCustomValidity('Nombre no debe contener numeros')" onchange="try{setCustomValidity('')}catch(e){}" required>
                             <label for="floatingNombre">Nombre Completo <FONT COLOR= "RED">*</FONT></label>
                         </div>
                          <div class="form-floating mb-3">
@@ -26,7 +26,7 @@
                             <label for="floatingUsuario">Nombre de Usuario <FONT COLOR= "RED">*</FONT></label>
                         </div>
                           <div class="form-floating mb-3">
-                            <input type="email" name="email" id="floatingUsuario" placeholder="Email" class="form-control" required>
+                            <input type="email" name="email" id="floatingUsuario" placeholder="Email" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
                             <label for="floatingUsuario">Correo Electronico <FONT COLOR= "RED">*</FONT></label>
                         </div>
                         <div class="form-floating mb-3">

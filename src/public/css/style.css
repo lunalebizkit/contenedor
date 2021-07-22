@@ -4,6 +4,20 @@ body {
     /* font-family: 'open Sans'; */
     overflow: hidden,
 }
+#ventaProducto{
+  background-image: url(../imagenes/contenedores.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  opacity: 1;
+}
+#cadaProducto{
+  opacity: 1;
+  border-width: 2px;
+  border-bottom-color: black;
+  border-left-color: black;
+  background-color: rgb(206, 250, 235);
+}
 
 .index {
     width: 100%;

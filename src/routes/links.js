@@ -14,7 +14,8 @@ router.get('/add', isLoggedIn, (req, res) => {
     res.render('links/add');
 });
 router.post('/add', isLoggedIn, async(req, res) => {
-    const {nombre, direccion, cuit, usuario, contrasenia}= req.body;   
+    const {nombre, direccion, cuit, email, usuario, contrasenia}= req.body;   
+    const comprobarEmail= await db.query('Select * from usuario_email where email =?', [email]);
     const usuar= await db.query('Select * from usuario where usuario =?', [usuario]);
     const cuit1= await db.query('Select * from usuario where cuit =?', [cuit]);
     if ( (usuar.length) > 0) {
@@ -23,7 +24,11 @@ router.post('/add', isLoggedIn, async(req, res) => {
     }  if ( (cuit1.length) > 0) {
         req.flash('mal', 'CUIT-CUIL-DNI Existente!');
         res.redirect('/links/add');
-    }else{
+    }if ((comprobarEmail.length)>0) {
+        req.flash('mal', 'Email Existente!');
+        res.redirect('/links/add');
+    }
+    else{
         const newUsuario = {
             nombre,
             direccion,
@@ -32,7 +37,9 @@ router.post('/add', isLoggedIn, async(req, res) => {
             contrasenia,
         };
         newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
-        const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario]);
+        const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario])
+        const newEmail = { usuario_id: resultado.insertId, email };
+        await db.query('INSERT INTO usuario_email set ?', [newEmail]);;
         req.flash('exito', 'Cliente agregado exitosamente');
         res.redirect('/links/lista');
     }   
@@ -165,7 +172,7 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
 //Ventas
 router.get('/venta/:id', isLoggedIn, async (req, res) => {
     const { id }= req.params;
-    const producto = await db.query('SELECT * FROM contenedor where estado = "Disponible"');
+    const producto = await db.query('SELECT * FROM contenedor where estado = "Disponible" or estado = ""');
     res.render('links/venta', { producto });
 });
 router.post('/venta/:id', isLoggedIn, async(req, res) =>{

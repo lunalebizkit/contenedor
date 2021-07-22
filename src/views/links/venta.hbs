@@ -1,11 +1,10 @@
-<div class="container mb-5">
-
+<div id="ventaProducto" class="container mb-5">
     <form href="/links/factura/{{usuario.id}}" method="POST">
     <button class="btn btn-success mb-2 mt-2" type="submit">Comprar!</button>
     <div class="row row-cols-3 row-cols-md-3 g-4 mb-3">
         {{#each producto}}
         <div class="col">
-            <div class="card">
+            <div id="cadaProducto" class="card">
                 <div class="card-body">
                     <label for="contenedor"><b>Contenedor: </b> {{marca}} <b>Capacidad: </b>{{IdCapacidad}} </label>
                 </div>

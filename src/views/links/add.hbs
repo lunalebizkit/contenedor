@@ -5,6 +5,7 @@
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Direccion</th>
+            <th scope="col">E-mail</th>
             <th scope="col">Cuit-Cuil-Dni</th>
             <th scope="col">Usuario</th>
             <th scope="col">Contraseña</th>
@@ -16,6 +17,7 @@
             <form action="/links/add" method="POST">
                 <td><input type="text" class="form-control" name="nombre" placeholder="Nombre y Apellido" required autofocus></td>
                 <td> <input type="text" class="form-control" name="direccion" placeholder="Direccion" required autofocus></td>
+                  <td> <input type="email" class="form-control" name="email" placeholder="Correo Electronico" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required></td>
                 <td><input type="text" class="form-control" name="cuit" placeholder="cuit-cuil-dni" required autofocus></td>
                 <td> <input type="text" class="form-control" name="usuario" placeholder="Usuario" required autofocus></td>
                 <td> <input type="text" class="form-control" name="contrasenia" placeholder="Contraseña" required autofocus></td>

@@ -5,7 +5,7 @@ const { isLoggedIn } = require('../lib/autor');
 const passport = require('passport');
 const objectsACsv = require('objects-to-csv');
 const { Result } = require('express-validator');
-const { send } = require('process');
+const { send, nextTick } = require('process');
 const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 const helpers =require('../lib/helper');
 require('nodemailer');
@@ -129,7 +129,7 @@ router.get('/editar/:id', isLoggedIn, async (req, res) => {
     const clientetelefono = await db.query('SELECT * FROM usuario_telefono WHERE usuario_id = ?', [id]);
     res.render('links/editar', { cliente: cliente[0], clientEmail, clientetelefono });
 });
-router.post('/editar/:id', isLoggedIn, async (req, res) => {
+router.post('/editar/:id', isLoggedIn, async (req, res, next) => {
     const { id } = req.params;
     const { nombre, direccion, cuit, telefono, email } = req.body;
     const newCliente = { nombre, direccion, cuit };
@@ -151,8 +151,9 @@ router.post('/editar/:id', isLoggedIn, async (req, res) => {
             await db.query('INSERT INTO usuario_telefono set ?', [newTelefono]);
         });
     } else {
+        if(telefono !== null){
         const newTelefono = { usuario_id, telefono };
-        await db.query('INSERT INTO usuario_telefono set?', [newTelefono])
+        await db.query('INSERT INTO usuario_telefono set?', [newTelefono])}
 
     }
     await db.query('UPDATE usuario set ? WHERE id = ?', [newCliente, id]);

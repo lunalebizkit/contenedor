@@ -12,7 +12,7 @@
             <form action="/links/editar/{{cliente.id}}" method="POST">
                 <td><input type="text" value="{{cliente.nombre}}" class="form-control" name="nombre"
                         placeholder="Nombre y Apellido" autofocus></td>
-                <td><input type="text" value=" {{cliente.cuit}}" class="form-control" name="cuit"
+                <td><input type="text" value="{{cliente.cuit}}" class="form-control" name="cuit"
                         placeholder="cuit-cuil-dni" autofocus></td>
                 <td> <input type="text" value="{{cliente.direccion }}" class="form-control" name="direccion"
                         placeholder="Direccion" autofocus required></td>
@@ -22,14 +22,14 @@
                 {{#each clientetelefono}}
                 </thead>
                 <div class="id" value="{{id}}">
-                <td><input type="text" value="{{telefono}}" class="form-control" name="telefono" placeholder="Telefono" required></td>
+                <td><input type="text" value="{{telefono}}" class="form-control" name="telefonos[]" placeholder="Telefono" required></td>
                 </div>
                 {{/each}}
                  <thead class="thead-dark">
                  <th scope="col">Email</th>
                 {{#each clientEmail}}
                 </thead>
-                <td><input type="text" value="{{email}}" class="form-control" name="email" placeholder="E-mail" required></td>
+                <td><input type="text" id="{{id}}" value="{{email}}" class="form-control" name="emails[]" placeholder="E-mail" required></td>
                 {{/each}}
                 <td><div class="form-group">
                         <button class="btn btn-success btn-block"> Guardar</button></td>

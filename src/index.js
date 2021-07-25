@@ -33,7 +33,7 @@ aplicacion.use(session({
 }));
 aplicacion.use(flash());
 aplicacion.use(morgan('dev'));
-aplicacion.use(express.urlencoded({extended: false}));
+aplicacion.use(express.urlencoded({extended: true}));
 aplicacion.use(express.json());
 aplicacion.use(passport.initialize());
 aplicacion.use(passport.session());

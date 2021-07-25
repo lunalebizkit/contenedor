@@ -10,7 +10,7 @@
           <p class="m-2">Nombre: {{usuario.nombre}}</p>
           <p class="m-2">Dirección: {{usuario.direccion}}</p>
           <p class="m-2">CUIT-CUIL-DNI: {{usuario.cuit}}</p>
-          <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
+          <a href="/links/editar/{{usuario.id}}" class="btn btn-success">Editar</a>
         </div>
       </div>
     </div>
@@ -23,8 +23,8 @@
           {{#each telefono}}
           <p class="m-2">Telefono: {{telefono}}</p>
           {{/each}}
-          <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
-          <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
+          <a href="/links/editar/{{usuario.id}}" class="btn btn-success">Editar</a>
+          <a href="/links/agregarContacto/{{usuario.id}}" class="btn btn-info">Agregar</a>
         </div>
       </div>
     </div>
@@ -37,8 +37,8 @@
           {{#each email}}
           <p class="m-2">E-mail: {{email}}</p>
           {{/each}}
-          <a href="/links/editar/{{usuarios.id}}" class="btn btn-success">Editar</a>
-          <a href="/links/agregarContacto/{{usuarios.id}}" class="btn btn-info">Agregar</a>
+          <a href="/links/editar/{{usuario.id}}" class="btn btn-success">Editar</a>
+          <a href="/links/agregarContacto/{{usuario.id}}" class="btn btn-info">Agregar</a>
         </div>
       </div>
     </div>

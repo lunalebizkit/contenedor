@@ -13,5 +13,14 @@
         <div class="card-footer text-center bg-white"><p>Sucursal: <b>{{Sucursal}}</b></p></div>
     </div>
     </div>
+    {{else}}
+    <div class="col-md-4 mx-auto py-5">
+        <div class="card">
+            <div class="card-body text-center">
+                <p><h5><em>Aun No Tienes Productos!!!</em></h5></p>
+                <a href="/links/venta/{{usuario.id}}">Ingresa Aqui!</a>
+            </div>
+        </div>
+    </div>
     {{/each}}
 </div>

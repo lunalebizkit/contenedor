@@ -4,9 +4,7 @@ const db = require('../database');
 const { isLoggedIn } = require('../lib/autor');
 const passport = require('passport');
 const objectsACsv = require('objects-to-csv');
-const { Result } = require('express-validator');
-const { send, nextTick } = require('process');
-const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
+
 const helpers =require('../lib/helper');
 require('nodemailer');
 
@@ -54,8 +52,8 @@ router.get('/persona/:id', isLoggedIn, async (req, res) => {
     const telefono = await db.query('SELECT telefono FROM usuario_telefono WHERE usuario_id =?', [id]);
     res.render('links/persona', { usuarios: usuarios[0], email, telefono });
 });
-//Lista de clientes
 
+//Lista de clientes
 router.get('/lista', isLoggedIn, async (req, res) => {
     //   const user= await db.query('SELECT * FROM usuario WHere rol =? ', 1);
     let usuarios = await db.query('SELECT * FROM usuario');
@@ -70,7 +68,6 @@ router.get('/lista', isLoggedIn, async (req, res) => {
 });
 
 //agregar contacto del cliente
-
 router.get('/agregarContacto/:id', isLoggedIn, async (req, res) => {
     const { id } = req.params;
     const clientEmail = await db.query('SELECT * FROM usuario_email WHERE id = ?', [id]);
@@ -94,6 +91,7 @@ router.post('/agregarContacto/:id', isLoggedIn, async (req, res) => {
     req.flash('exito', 'Contacto agregado correctamente');
     res.redirect('/links/persona/:id');
 });
+
 //Agregar un Contenedor
 router.get('/agregarContainer', isLoggedIn, async (req, res) => {
     res.render('links/agregarContainer');
@@ -121,6 +119,7 @@ router.get('/listaContainer/:id', isLoggedIn, async (req, res) => {
     const contenedor = await db.query('SELECT * FROM contenedor Where id_usuario =?', [id]);
     res.render('links/listaContainer', { contenedores, contenedor });
 });
+
 //editar un cliente 
 router.get('/editar/:id', isLoggedIn, async (req, res) => {
     const { id } = req.params;
@@ -129,35 +128,45 @@ router.get('/editar/:id', isLoggedIn, async (req, res) => {
     const clientetelefono = await db.query('SELECT * FROM usuario_telefono WHERE usuario_id = ?', [id]);
     res.render('links/editar', { cliente: cliente[0], clientEmail, clientetelefono });
 });
-router.post('/editar/:id', isLoggedIn, async (req, res, next) => {
+router.post('/editar/:id', isLoggedIn, async (req, res) => {
     const { id } = req.params;
-    const { nombre, direccion, cuit, telefono, email } = req.body;
+    const { nombre, direccion, cuit, telefonos, emails } = req.body;
     const newCliente = { nombre, direccion, cuit };
     const usuario_id = req.params.id;
-    await db.query('DELETE FROM usuario_email WHERE usuario_id = ?', [id]);
-    if (email instanceof Array) {
-        email.forEach(async email => {
-            const newEmail = { usuario_id, email };
-            await db.query('INSERT INTO usuario_email set ?', [newEmail]);
-        });
-    } else {
-        const newEmail = { usuario_id, email };
-        await db.query('INSERT INTO usuario_email set?', [newEmail]);
-    }
-    await db.query('DELETE FROM usuario_telefono WHERE usuario_id = ?', [id]);
-    if (telefono instanceof Array) {
-        telefono.forEach(async telefono => {
-            const newTelefono = { usuario_id, telefono };
-            await db.query('INSERT INTO usuario_telefono set ?', [newTelefono]);
-        });
-    } else {
-        if(telefono !== null){
-        const newTelefono = { usuario_id, telefono };
-        await db.query('INSERT INTO usuario_telefono set?', [newTelefono])}
-
-    }
+    if(emails) {       
+        await db.query('DELETE FROM usuario_email WHERE usuario_id =?', [id]); 
+        emails.forEach(async email => {
+        if(email){
+            let newEmail = { usuario_id, email };
+            await db.query('INSERT INTO usuario_email set ?', [newEmail]);}
+    });}    
+    if (telefonos) {
+        await db.query('DELETE FROM usuario_telefono WHERE usuario_id = ?', [id]);
+        telefonos.forEach(async telefono => {
+        if (telefono) {
+            let newTelefono = { usuario_id, telefono };
+            await db.query('INSERT INTO usuario_telefono set ?', [newTelefono]);}
+        });}
     await db.query('UPDATE usuario set ? WHERE id = ?', [newCliente, id]);
     req.flash('exito', 'Cliente editado correctamente');
+    res.redirect('/links/persona/:id');
+});
+
+//Editar un telefono
+router.get('/editarTelefono/:id', isLoggedIn, async(req, res) =>{
+    const { id } = req.user
+    const telefono= await db.query('Select * from usuario_telefono WHERE usuario_id =?', [id]);
+    res.render('links/editarTelefono', {telefono});
+});
+router.post('/editarTelefono/:id', isLoggedIn, async(req, res) =>{
+    const {telefonos}= req.body;
+
+    console.info(req.body);
+    console.info(telefonos);
+    telefonos.forEach(telefono=>{
+        console.info(telefono);
+    });
+  
     res.redirect('/links/persona/:id');
 });
 //eliminar un cliente

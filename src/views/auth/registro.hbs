@@ -9,7 +9,7 @@
                     <p class="m-0" style="text-align:left" ><FONT COLOR= "RED">* Campos Obligatorios</FONT></p>    
                     <form action="/registro" method="POST">
                         <div class="form-floating mb-3">
-                            <input type="text" name="nombre" id="floatingNombre" placeholder="Nombre Completo" class="form-control" pattern="[a-zA-Z]{2,40}" oninvalid="setCustomValidity('Nombre no debe contener numeros')" onchange="try{setCustomValidity('')}catch(e){}" required>
+                            <input type="text" name="nombre" id="floatingNombre" class="form-control" required placeholder=" " >
                             <label for="floatingNombre">Nombre Completo <FONT COLOR= "RED">*</FONT></label>
                         </div>
                          <div class="form-floating mb-3">

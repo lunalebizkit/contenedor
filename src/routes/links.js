@@ -6,14 +6,32 @@ const passport = require('passport');
 const objectsACsv = require('objects-to-csv');
 
 const helpers =require('../lib/helper');
+const e = require('connect-flash');
 require('nodemailer');
 
 //Agregar cliente
-router.get('/add', isLoggedIn, (req, res) => {
+router.get('/add', isLoggedIn, async(req, res) => {
     res.render('links/add');
 });
-router.post('/add', isLoggedIn, async(req, res) => {
-    const {nombre, direccion, cuit, email, usuario, contrasenia}= req.body;   
+router.post('/add', isLoggedIn, async (req, res) => {
+    const {nombre, direccion, email, cuit, usuario, contrasenia}= req.body;
+    try {
+       if (nombre.match(/(\d+)/g)) {
+        req.flash('mal', 'El Nombre no debe contener Numero!');
+        res.redirect('/links/add');           
+       }else{
+        return nombre
+       }
+    } catch (e) {        
+            console.info(e);
+    }
+    const newUsuario = {
+        nombre,
+        direccion,
+        cuit,
+        usuario,
+        contrasenia,
+    };
     const comprobarEmail= await db.query('Select * from usuario_email where email =?', [email]);
     const usuar= await db.query('Select * from usuario where usuario =?', [usuario]);
     const cuit1= await db.query('Select * from usuario where cuit =?', [cuit]);
@@ -23,18 +41,11 @@ router.post('/add', isLoggedIn, async(req, res) => {
     }  if ( (cuit1.length) > 0) {
         req.flash('mal', 'CUIT-CUIL-DNI Existente!');
         res.redirect('/links/add');
-    }if ((comprobarEmail.length)>0) {
+    }if ((comprobarEmail.length) > 0) {
         req.flash('mal', 'Email Existente!');
         res.redirect('/links/add');
     }
     else{
-        const newUsuario = {
-            nombre,
-            direccion,
-            cuit,
-            usuario,
-            contrasenia,
-        };
         newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
         const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario])
         const newEmail = { usuario_id: resultado.insertId, email };
@@ -115,9 +126,9 @@ router.post('/agregarContainer', isLoggedIn, async (req, res) => {
 //lista de Containers
 router.get('/listaContainer/:id', isLoggedIn, async (req, res) => {
     const { id } = req.user;
-    const contenedores = await db.query('SELECT * FROM contenedor');
-    const contenedor = await db.query('SELECT * FROM contenedor Where id_usuario =?', [id]);
-    res.render('links/listaContainer', { contenedores, contenedor });
+    const contenedores = await db.query('SELECT * FROM contenedor order by IdCapacidad');
+    //const contenedor = await db.query('SELECT * FROM contenedor Where id_usuario =?', [id]);
+    res.render('links/listaContainer', { contenedores });
 });
 
 //editar un cliente 

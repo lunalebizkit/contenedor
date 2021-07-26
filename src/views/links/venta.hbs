@@ -1,12 +1,12 @@
 <div id="ventaProducto" class="container mb-5">
     <form href="/links/factura/{{usuario.id}}" method="POST">
-    <button class="btn btn-success mb-2 mt-2" type="submit">Comprar!</button>
+    <button class="btn btn-success btn-lg mb-2 mt-2" type="submit">Comprar!</button>
     <div class="row row-cols-3 row-cols-md-3 g-4 mb-3">
         {{#each producto}}
         <div class="col">
             <div id="cadaProducto" class="card">
                 <div class="card-body">
-                    <label for="contenedor"><b>Contenedor: </b> {{marca}} <b>Capacidad: </b>{{IdCapacidad}} </label>
+                    <label for="contenedor"><b>Contenedor: </b> {{marca}} <b>Capacidad (Pies): </b>{{IdCapacidad}} <br><b>Numero: </b>{{NroContenedor}}</label>
                 </div>
                 <div class="card-footer">
                     <input type="checkbox" name="contenedor" value="{{NroContenedor}}" >

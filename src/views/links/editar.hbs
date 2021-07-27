@@ -1,6 +1,8 @@
+<div class="container mt-3">
+    <div><h3 style="text-align: center;"><u> Editar Cliente </u>{{cliente.nombre}} </h3></div>
 <table class="table table-bordered">
-    <thead class="thead-dark">
-        <h3>Editar Cliente {{cliente.nombre}} </h3>
+    <thead class="table-dark">
+        
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Cuit-Cuil-Dni</th>
@@ -17,15 +19,14 @@
                 <td> <input type="text" value="{{cliente.direccion }}" class="form-control" name="direccion"
                         placeholder="Direccion" autofocus required></td>
                 
-                <thead class="thead-dark">
+                <thead class="table-dark">
                  <th scope="col">Telefono</th>
                 {{#each clientetelefono}}
-                </thead>
-                <div class="id" value="{{id}}">
-                <td><input type="text" value="{{telefono}}" class="form-control" name="telefonos[]" placeholder="Telefono" required></td>
+                </thead>    
+                <td><input type="number" id="{{id}}" value="{{telefono}}" class="form-control" name="telefonos[]" placeholder="Telefono" required></td>
                 </div>
                 {{/each}}
-                 <thead class="thead-dark">
+                 <thead class="table-dark">
                  <th scope="col">Email</th>
                 {{#each clientEmail}}
                 </thead>
@@ -38,3 +39,4 @@
         </tr>
     </tbody>
 </table>
+</div>

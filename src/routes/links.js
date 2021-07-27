@@ -23,8 +23,7 @@ router.post('/add', isLoggedIn, async (req, res) => {
         contrasenia
     }
     const comprobarUsuario = await db.query('Select * from usuario where usuario =?', [usuario]);
-    const comprobarCuit = await db.query('Select * from usuario where cuit =?', [cuit]);
-  
+    const comprobarCuit = await db.query('Select * from usuario where cuit =?', [cuit]);  
     if ((comprobarCuit.length)>0) {
         return  req.flash('mal', 'CUIT-CUIL-DNI Existente!'),
         res.redirect('/links/add')
@@ -85,7 +84,13 @@ router.post('/agregarContacto/:id', isLoggedIn, async (req, res) => {
     const usuario_id = req.params.id;
     if (email.length > 0) {
         const newEmail = { usuario_id, email };
-        await db.query('INSERT INTO usuario_email set ?', [newEmail]);
+        try {
+            await db.query('INSERT INTO usuario_email set ?', [newEmail]);
+        } catch {
+            req.flash('mal', 'Email existente!'),
+            res.redirect('/links/agregarContacto/:id');
+        }
+       
     }
     if (telefono.length > 0) {
         const newTelefono = { usuario_id, telefono };
@@ -125,32 +130,38 @@ router.get('/listaContainer/:id', isLoggedIn, async (req, res) => {
 
 //editar un cliente 
 router.get('/editar/:id', isLoggedIn, async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.user;
     const cliente = await db.query('SELECT * FROM usuario WHERE id = ?', [id]);
     const clientEmail = await db.query('SELECT * FROM usuario_email WHERE usuario_id = ?', [id]);
     const clientetelefono = await db.query('SELECT * FROM usuario_telefono WHERE usuario_id = ?', [id]);
     res.render('links/editar', { cliente: cliente[0], clientEmail, clientetelefono });
 });
-router.post('/editar/:id', isLoggedIn, async (req, res) => {
+router.post('/editar/:id', isLoggedIn, async(req, res) => {
     const { id } = req.params;
     const { nombre, direccion, cuit, telefonos, emails } = req.body;
     const newCliente = { nombre, direccion, cuit };
     const usuario_id = req.params.id;
-    if (emails) {
-        await db.query('DELETE FROM usuario_email WHERE usuario_id =?', [id]);
-        emails.forEach(async email => {
-            if (email) {
-                let newEmail = { usuario_id, email };
-                await db.query('INSERT INTO usuario_email set ?', [newEmail]);
-            }
-        });
-    }
     if (telefonos) {
-        await db.query('DELETE FROM usuario_telefono WHERE usuario_id = ?', [id]);
+        await db.query('DELETE FROM usuario_telefono WHERE usuario_id =?', [id]);
         telefonos.forEach(async telefono => {
             if (telefono) {
                 let newTelefono = { usuario_id, telefono };
                 await db.query('INSERT INTO usuario_telefono set ?', [newTelefono]);
+            }
+        });
+    }
+    if (emails) {
+        await db.query('DELETE FROM usuario_email WHERE usuario_id =?', [id]);
+        emails.forEach( async email => {
+            if (email) {
+                let newEmail = { usuario_id, email };
+                try {
+                    await db.query('INSERT INTO usuario_email set ?', [newEmail]);
+                } catch {
+                    req.flash('mal', 'Email existente!'),
+                    res.redirect('/links/editar/:id');
+                }
+                
             }
         });
     }

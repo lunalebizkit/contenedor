@@ -7,9 +7,10 @@ body {
 #ventaProducto{
   background-image: url(../imagenes/contenedores.jpg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-position: center center;
   opacity: 1;
+  background-attachment: fixed;
 }
 #cadaProducto{
   opacity: 1;

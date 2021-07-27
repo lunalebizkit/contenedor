@@ -13,10 +13,9 @@
         </thead>
         
             <tbody class="table-warning text-center">
-                <form action="/links/add" method="POST">
+                <form id="validationForm" action="/links/add" method="POST">
                 <tr>
-                    <td><input type="text" class="form-control" name="nombre" placeholder="Nombre y Apellido" required
-                            autofocus></td>
+                    <td><input type="text" id="validar" class="form-control" name="nombre" pattern="^[A-za-Z]+$" oninvalid="setCustomValidity('No ingrese numeros')" placeholder="Nombre y Apellido" required autofocus> </td>
                     <td> <input type="text" class="form-control" name="direccion" placeholder="Direccion" required></td>
                     <td> <input type="email" class="form-control" name="email" placeholder="Correo Electronico"
                             pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required></td>
@@ -28,7 +27,7 @@
             </tbody>
     </table>
     <div class="form-group">
-        <button class="btn btn-success btn-lg"> Guardar Cliente</button>
+        <button class="btn btn-success btn-lg"> Cargar Cliente</button>
     </div>
     </form>
 </div>

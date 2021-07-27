@@ -29,11 +29,11 @@ passport.use('local.registro', new localStrategy({
         passReqToCallback: true
 }, async (req, usuario, contrasenia, done) => {
     const {nombre, direccion, cuit, email}= req.body;
-    if (nombre.match(/(\d+)/g)) {
-        return done(null, false, req.flash('mal', 'El Nombre no debe contener Numero!'));
-        }            
-    else {
-        return nombre }
+    // if (nombre.match(/(\d+)/g)) {
+    //     return done(null, false, req.flash('mal', 'El Nombre no debe contener Numero!'));
+    //     }            
+    // else {
+    //     return nombre }
     const comprobar= await db.query('Select * from usuario Where usuario = ?', [usuario]);
     const comprobarEmail = await db.query('SELECT * FROM usuario_email WHERE email =?', [email]);
     if ((comprobar.length)> 0) {

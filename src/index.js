@@ -20,7 +20,7 @@ aplicacion.engine('.hbs', expresshbs({
     layoutsDir: path.join(aplicacion.get('views'), 'layouts'),
     partialsDir: path.join(aplicacion.get('views'), 'partials'),
     extname: '.hbs',
-    helpers: require('./lib/handlebars'),
+    //helpers: require('./lib/handlebars'),
 }));
 aplicacion.set('view engine', '.hbs');
 

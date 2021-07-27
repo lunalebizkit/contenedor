@@ -5,54 +5,47 @@ const { isLoggedIn } = require('../lib/autor');
 const passport = require('passport');
 const objectsACsv = require('objects-to-csv');
 
-const helpers =require('../lib/helper');
+const helpers = require('../lib/helper');
 const e = require('connect-flash');
 require('nodemailer');
 
 //Agregar cliente
-router.get('/add', isLoggedIn, async(req, res) => {
+router.get('/add', isLoggedIn, async (req, res) => {
     res.render('links/add');
 });
 router.post('/add', isLoggedIn, async (req, res) => {
-    const {nombre, direccion, email, cuit, usuario, contrasenia}= req.body;
-    try {
-       if (nombre.match(/(\d+)/g)) {
-        req.flash('mal', 'El Nombre no debe contener Numero!');
-        res.redirect('/links/add');           
-       }else{
-        return nombre
-       }
-    } catch (e) {        
-            console.info(e);
-    }
+    const { nombre, direccion, email, cuit, usuario, contrasenia } = req.body;   
     const newUsuario = {
         nombre,
         direccion,
         cuit,
         usuario,
-        contrasenia,
-    };
-    const comprobarEmail= await db.query('Select * from usuario_email where email =?', [email]);
-    const usuar= await db.query('Select * from usuario where usuario =?', [usuario]);
-    const cuit1= await db.query('Select * from usuario where cuit =?', [cuit]);
-    if ( (usuar.length) > 0) {
-        req.flash('mal', 'Usuario Existente!');
-        res.redirect('/links/add');
-    }  if ( (cuit1.length) > 0) {
-        req.flash('mal', 'CUIT-CUIL-DNI Existente!');
-        res.redirect('/links/add');
-    }if ((comprobarEmail.length) > 0) {
-        req.flash('mal', 'Email Existente!');
+        contrasenia
+    }
+    const comprobarUsuario = await db.query('Select * from usuario where usuario =?', [usuario]);
+    const comprobarCuit = await db.query('Select * from usuario where cuit =?', [cuit]);
+  
+    if ((comprobarCuit.length)>0) {
+        return  req.flash('mal', 'CUIT-CUIL-DNI Existente!'),
+        res.redirect('/links/add')
+    }
+    if ((comprobarUsuario.length) > 0) {
+        return req.flash('mal', 'Usuario Existente!'),
         res.redirect('/links/add');
     }
-    else{
+    else {
         newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
-        const resultado= await db.query('INSERT INTO usuario SET ? ', [newUsuario])
+        const resultado = await db.query('INSERT INTO usuario SET ? ', [newUsuario])
         const newEmail = { usuario_id: resultado.insertId, email };
-        await db.query('INSERT INTO usuario_email set ?', [newEmail]);;
+        try {
+            await db.query('INSERT INTO usuario_email set ?', [newEmail]);
+        } catch  {
+            req.flash('mal', 'Email Existente!'),
+        res.redirect('/links/add');
+        }       
         req.flash('exito', 'Cliente agregado exitosamente');
         res.redirect('/links/lista');
-    }   
+    }
 });
 
 // pagina de persona
@@ -127,7 +120,6 @@ router.post('/agregarContainer', isLoggedIn, async (req, res) => {
 router.get('/listaContainer/:id', isLoggedIn, async (req, res) => {
     const { id } = req.user;
     const contenedores = await db.query('SELECT * FROM contenedor order by IdCapacidad');
-    //const contenedor = await db.query('SELECT * FROM contenedor Where id_usuario =?', [id]);
     res.render('links/listaContainer', { contenedores });
 });
 
@@ -144,42 +136,29 @@ router.post('/editar/:id', isLoggedIn, async (req, res) => {
     const { nombre, direccion, cuit, telefonos, emails } = req.body;
     const newCliente = { nombre, direccion, cuit };
     const usuario_id = req.params.id;
-    if(emails) {       
-        await db.query('DELETE FROM usuario_email WHERE usuario_id =?', [id]); 
+    if (emails) {
+        await db.query('DELETE FROM usuario_email WHERE usuario_id =?', [id]);
         emails.forEach(async email => {
-        if(email){
-            let newEmail = { usuario_id, email };
-            await db.query('INSERT INTO usuario_email set ?', [newEmail]);}
-    });}    
+            if (email) {
+                let newEmail = { usuario_id, email };
+                await db.query('INSERT INTO usuario_email set ?', [newEmail]);
+            }
+        });
+    }
     if (telefonos) {
         await db.query('DELETE FROM usuario_telefono WHERE usuario_id = ?', [id]);
         telefonos.forEach(async telefono => {
-        if (telefono) {
-            let newTelefono = { usuario_id, telefono };
-            await db.query('INSERT INTO usuario_telefono set ?', [newTelefono]);}
-        });}
+            if (telefono) {
+                let newTelefono = { usuario_id, telefono };
+                await db.query('INSERT INTO usuario_telefono set ?', [newTelefono]);
+            }
+        });
+    }
     await db.query('UPDATE usuario set ? WHERE id = ?', [newCliente, id]);
     req.flash('exito', 'Cliente editado correctamente');
     res.redirect('/links/persona/:id');
 });
 
-//Editar un telefono
-router.get('/editarTelefono/:id', isLoggedIn, async(req, res) =>{
-    const { id } = req.user
-    const telefono= await db.query('Select * from usuario_telefono WHERE usuario_id =?', [id]);
-    res.render('links/editarTelefono', {telefono});
-});
-router.post('/editarTelefono/:id', isLoggedIn, async(req, res) =>{
-    const {telefonos}= req.body;
-
-    console.info(req.body);
-    console.info(telefonos);
-    telefonos.forEach(telefono=>{
-        console.info(telefono);
-    });
-  
-    res.redirect('/links/persona/:id');
-});
 //eliminar un cliente
 
 router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
@@ -193,58 +172,61 @@ router.get('/eliminar/:id', isLoggedIn, async (req, res) => {
 
 //Ventas
 router.get('/venta/:id', isLoggedIn, async (req, res) => {
-    const { id }= req.params;
+    const { id } = req.params;
     const producto = await db.query('SELECT * FROM contenedor where estado = "Disponible" or estado = ""');
     res.render('links/venta', { producto });
 });
-router.post('/venta/:id', isLoggedIn, async(req, res) =>{
-    const { id }= req.user;
-    const {contenedor}= req.body;
-    req.session.contenedor= contenedor
+router.post('/venta/:id', isLoggedIn, async (req, res) => {
+    const { id } = req.user;
+    const { contenedor } = req.body;
+    req.session.contenedor = contenedor
     res.redirect('/links/factura/:id');
 });
 
 //Confirmacion de facturas
-router.get('/factura/:id', async(req, res) =>{
-    const {id} = req.user;
-    let {contenedor}= req.session; 
-    let consulta= [];
+router.get('/factura/:id', async (req, res) => {
+    const { id } = req.user;
+    let { contenedor } = req.session;
+    let consulta = [];
     if (contenedor instanceof Array) {
-       for (let i =0; i < contenedor.length; i ++) {
-        let producto= await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor[i]]);
-        consulta.push(producto[0]);}
-    }    
-    else {consulta= await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor]);};
-    req.session.contenedor = consulta;                                                                            
-    res.render('links/factura', {consulta});
+        for (let i = 0; i < contenedor.length; i++) {
+            let producto = await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor[i]]);
+            consulta.push(producto[0]);
+        }
+    }
+    else { consulta = await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor]); };
+    req.session.contenedor = consulta;
+    res.render('links/factura', { consulta });
 });
-router.post('/factura/:id', isLoggedIn, async(req, res)=>{
-    const {id}= req.params;
-    const {contenedor}= req.session;
-    let fecha= new Date(Date.now()).toLocaleDateString();
-    const newFactura = {Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroCliente: id, idOperacion:  1, total: '', Fecha: fecha, idEstadoFactura: 2 };
+router.post('/factura/:id', isLoggedIn, async (req, res) => {
+    const { id } = req.params;
+    const { contenedor } = req.session;
+    let fecha = new Date(Date.now()).toLocaleDateString();
+    const newFactura = { Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroCliente: id, idOperacion: 1, total: '', Fecha: fecha, idEstadoFactura: 2 };
     if ((contenedor.length) > 1) {
-        const facturar= await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
-        let num= facturar.insertId;
+        const facturar = await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
+        let num = facturar.insertId;
         contenedor.forEach(async numero => {
-            const detalle= await{Numero: num, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: numero.NroContenedor, precio: ''};
+            const detalle = await { Numero: num, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: numero.NroContenedor, precio: '' };
             await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);;
-            await db.query('Update contenedor set estado = "Vendido" where NroContenedor =?', numero.NroContenedor);})
+            await db.query('Update contenedor set estado = "Vendido" where NroContenedor =?', numero.NroContenedor);
+        })
     } else {
-       const facturar= await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
-        const nro = contenedor[0].NroContenedor;        
-        const detalle= await{Numero: facturar.insertId, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: nro, precio: ''};
+        const facturar = await db.query('INSERT INTO encabezado_factura_venta set?', [newFactura]);
+        const nro = contenedor[0].NroContenedor;
+        const detalle = await { Numero: facturar.insertId, Tipo: 'A', Sucursal: 'Rodriguez Peña 1349, Maipu', NroContenedor: nro, precio: '' };
         await db.query('INSERT INTO encabezado_detalle_venta set?', [detalle]);
-        await db.query('Update contenedor set estado = "Vendido" where NroContenedor =?', [nro]);}
-  
+        await db.query('Update contenedor set estado = "Vendido" where NroContenedor =?', [nro]);
+    }
+
     res.redirect('/links/misProductos/:id');
 });
 
 //Vista de mis productos
-router.get('/misProductos/:id', isLoggedIn, async(req, res) =>{
-    const {id} = req.user;
-    const misProductos= await db.query('Select * from encabezado_factura_venta inner join encabezado_detalle_venta on encabezado_factura_venta.Numero = encabezado_detalle_venta.Numero inner join contenedor on encabezado_detalle_venta.NroContenedor = contenedor.NroContenedor  where encabezado_factura_venta.NroCliente = ?', [id]);
-    res.render('links/misProductos', {misProductos});
+router.get('/misProductos/:id', isLoggedIn, async (req, res) => {
+    const { id } = req.user;
+    const misProductos = await db.query('Select * from encabezado_factura_venta inner join encabezado_detalle_venta on encabezado_factura_venta.Numero = encabezado_detalle_venta.Numero inner join contenedor on encabezado_detalle_venta.NroContenedor = contenedor.NroContenedor  where encabezado_factura_venta.NroCliente = ?', [id]);
+    res.render('links/misProductos', { misProductos });
 });
 
 module.exports = router;

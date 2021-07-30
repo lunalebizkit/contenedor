@@ -1,6 +1,6 @@
 <div class="container mb-5">
     <div class="col-md-10 mx-auto mt-5 md-2">
-        <div class="card">
+        <div id="factura" class="card">
             <div class="card-header text-center bg-warning">
                 <h3>Finalizar Compra</h3>
             </div>
@@ -18,12 +18,12 @@
             <div class="row row-cols-1 row-cols-md-3 g-3 ">
                 {{#each consulta}}
                 <div class="col m-3">
-                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-header">Contenedor</div>
-                        <div class="card-body">
+                    <div class="card text-dark border-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"><b>Contenedor</b></div>
+                        <div class="card-body text-primary">
                             <h5 class="card-title">Marca :{{marca}}</h5>
-                            <p class="card-text">Usted ha elegido el Contenedor {{NroContenedor}}. <br> El Peso es
-                                de {{Tara}} kgs.<br> La capacidad es de {{IdCapacidad}}. </p>
+                            <p class="card-text ">Usted ha elegido el Contenedor {{NroContenedor}}. <br> El Peso es
+                                de {{Tara}} kgs.<br> La capacidad es de {{IdCapacidad}} Pies.</p>
                         </div>
                     </div>
                 </div>

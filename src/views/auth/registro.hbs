@@ -1,44 +1,54 @@
-<div class="container p-5">
-    <div class="row">
-        <div class="col-md-5 mx-auto">
-            <div class="card text-center">
-                <div class="card-header m-2 bg-warning">
-                    <h3>Crear Cuenta</h3>
-                </div>
-                <div class="card-body">
-                    <p class="m-0" style="text-align:left" ><FONT COLOR= "RED">* Campos Obligatorios</FONT></p>    
-                    <form action="/registro" method="POST">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="nombre" pattern="^[A-za-Z]+$" id="floatingNombre" class="form-control" required placeholder=" " >
-                            <label for="floatingNombre">Nombre Completo <FONT COLOR= "RED">*</FONT></label>
-                        </div>
-                         <div class="form-floating mb-3">
-                            <input type="text" name="direccion" id="floatingDirec" placeholder=" " class="form-control" required>
-                            <label for="floatingDirec">Direccion <FONT COLOR= "RED">*</FONT></label>
-                        </div>
-                        <div class="form-floating mb-3">
-                             <input type="text" name="cuit"id="floatingCuit" placeholder="CUIT-CUIL-DNI" class="form-control" required>
-                             <label for="floatingCuit">CUIT-CUIL-DNI <FONT COLOR= "RED">*</FONT></label>
-                        </div>
-                        
-                        <div class="form-floating mb-3">
-                            <input type="text" name="usuario" id="floatingUsuario" placeholder="Usuario" class="form-control" required>
-                            <label for="floatingUsuario">Nombre de Usuario <FONT COLOR= "RED">*</FONT></label>
-                        </div>
-                          <div class="form-floating mb-3">
-                            <input type="email" name="email" id="floatingUsuario" placeholder="Email" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
-                            <label for="floatingUsuario">Correo Electronico <FONT COLOR= "RED">*</FONT></label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" name="contrasenia" id="floatingContra" placeholder="Contraseña" class="form-control" required>
-                            <label for="floatingContra">Contraseña <FONT COLOR= "RED">*</FONT></label>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block">
-                                Registrarse
-                            </button>
-                        </div>
-                    </form>
+<div calss="container" id="registro" style="">
+    <div class="container p-5">
+        <div class="row">
+            <div class="col-md-5 mx-auto" >
+                <div class="card text-center">
+                    <div class="card-header m-2 bg-warning">
+                        <h3>Crear Cuenta</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="m-0" style="text-align:left">
+                            <FONT COLOR="RED">* Campos Obligatorios</FONT>
+                        </p>
+                        <form action="/registro" method="POST">
+                            <div class="form-floating mb-3">
+                                <input type="text" name="nombre" pattern="^[A-za-Z]+$" id="floatingNombre"
+                                    class="form-control" required placeholder=" ">
+                                <label for="floatingNombre">Nombre Completo <FONT COLOR="RED">*</FONT></label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" name="direccion" id="floatingDirec" placeholder=" "
+                                    class="form-control" required>
+                                <label for="floatingDirec">Direccion <FONT COLOR="RED">*</FONT></label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" name="cuit" id="floatingCuit" placeholder="CUIT-CUIL-DNI"
+                                    class="form-control" required>
+                                <label for="floatingCuit">CUIT-CUIL-DNI <FONT COLOR="RED">*</FONT></label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" name="usuario" id="floatingUsuario" placeholder="Usuario"
+                                    class="form-control" required>
+                                <label for="floatingUsuario">Nombre de Usuario <FONT COLOR="RED">*</FONT></label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" name="email" id="floatingUsuario" placeholder="Email"
+                                    class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+                                <label for="floatingUsuario">Correo Electronico <FONT COLOR="RED">*</FONT></label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" name="contrasenia" id="floatingContra" placeholder="Contraseña"
+                                    class="form-control" required>
+                                <label for="floatingContra">Contraseña <FONT COLOR="RED">*</FONT></label>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success btn-block">
+                                    Registrarse
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

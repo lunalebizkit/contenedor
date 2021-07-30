@@ -4,10 +4,10 @@ const db = require('../database');
 const { isLoggedIn } = require('../lib/autor');
 const passport = require('passport');
 const objectsACsv = require('objects-to-csv');
-
+const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 const helpers = require('../lib/helper');
 const e = require('connect-flash');
-require('nodemailer');
 
 //Agregar cliente
 router.get('/add', isLoggedIn, async (req, res) => {
@@ -32,7 +32,53 @@ router.post('/add', isLoggedIn, async (req, res) => {
         return req.flash('mal', 'Usuario Existente!'),
         res.redirect('/links/add');
     }
-    else {
+    else {        
+        const mensajeMail =`
+        <h3>Hola! ${nombre}...<br>
+            Gracias por Registrarse a Containers & Logistica !!! </h3>        
+        <ul>
+            <li>Su Usuario es:<b> ${usuario} </b></li>
+            <li>Su contraseña es :<b> ${contrasenia} </b></li>
+        </ul> 
+    `;    
+    const CLIENT_ID="341263466702-kgegh0q8lvoppkt62du36dnfgvi6hdc8.apps.googleusercontent.com";
+    const CLIENT_SECRET="mT3ZTIsG3TMt0p6GCXDjUH2U";
+    const REDIRECT_URI="https://developers.google.com/oauthplayground";
+    const REFRESH_TOKEN="1//04ibsMJj_SYOxCgYIARAAGAQSNwF-L9IrAdG5m_Bi60t6MPcBALXE2PY1BfDEWDbuRJq3gn3EiSdZFDBFFIuBgQ1QfZ-LwQ84BSQ";
+    const oAuth2cliente = new google.auth.OAuth2( 
+        CLIENT_ID,
+        CLIENT_SECRET,
+        REDIRECT_URI
+        );    
+     oAuth2cliente.setCredentials({refresh_token:REFRESH_TOKEN});     
+     async function sendMail(){
+         try{
+            const accessToken= await oAuth2cliente.getAccessToken()
+            const transporter= nodemailer.createTransport({
+                 service: "gmail",
+                 auth:{
+                     type:"Oauth2",
+                     user: "lunalebizkit@gmail.com",
+                     clientId:CLIENT_ID,
+                     clientSecret:CLIENT_SECRET,
+                     refreshToken:REFRESH_TOKEN,
+                     accessToken:accessToken
+                 },    
+             });
+             const mailOptions=                
+                {from:"Contenedores & Logistica <lunalebizkit@gmail.com>",
+                 to: email,
+                 subject:"Confirmacion de Registro",
+                 html: mensajeMail };
+             const result = await transporter.sendMail(mailOptions);
+             return result    
+         }catch(err){
+             console.log(err);
+         }        
+     } 
+    sendMail()
+    //  .then((result)=>res.status(200).send('enviado'))
+     .catch((error)=> console.log(error.message));
         newUsuario.contrasenia = await helpers.encriptaContrasenia(contrasenia);
         const resultado = await db.query('INSERT INTO usuario SET ? ', [newUsuario])
         const newEmail = { usuario_id: resultado.insertId, email };
@@ -130,7 +176,7 @@ router.get('/listaContainer/:id', isLoggedIn, async (req, res) => {
 
 //editar un cliente 
 router.get('/editar/:id', isLoggedIn, async (req, res) => {
-    const { id } = req.user;
+    const { id } = req.params;
     const cliente = await db.query('SELECT * FROM usuario WHERE id = ?', [id]);
     const clientEmail = await db.query('SELECT * FROM usuario_email WHERE usuario_id = ?', [id]);
     const clientetelefono = await db.query('SELECT * FROM usuario_telefono WHERE usuario_id = ?', [id]);

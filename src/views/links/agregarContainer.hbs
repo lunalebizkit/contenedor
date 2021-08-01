@@ -1,4 +1,5 @@
 <div class="container mt-3">
+    <form action="/links/agregarContainer" method="POST">
     <table class="table table-bordered mt-3">
         <thead class="table-dark text-white text-center">
             <h3 style="text-align: center;"><u> Agregar Container </u></h3>
@@ -10,18 +11,18 @@
             </tr>
         </thead>
         <tbody class="table-warning">
-             <form action="/links/agregarContainer" method="POST">
+             
             <tr>               
-                    <td><input type="text" class="form-control" name="NroContenedor" placeholder="Numero Contenedor">
+                    <td><input type="text" class="form-control" name="NroContenedor" placeholder="Numero Contenedor" required>
                     </td>
-                    <td><input type="text" class="form-control" name="marca" placeholder="Marca"></td>
-                    <td><input type="number" min="20" max="40" step="20" class="form-control" name="IdCapacidad" placeholder="Pies"></td>
-                    <td><input type="text" class="form-control" name="Tara" placeholder="Tara"></td>               
+                    <td><input type="text" class="form-control" name="marca" placeholder="Marca" required></td>
+                    <td><input type="number" min="20" max="40" step="20" class="form-control" name="IdCapacidad" placeholder="Pies" required></td>
+                    <td><input type="text" class="form-control" name="Tara" placeholder="Tara" required></td>               
             </tr>
         </tbody>
     </table>
     <div class="form-group">
-        <button class="btn btn-success btn-lg"> Cargar Container</button>
+        <button class="btn btn-success btn-lg"> Cargar Container</button></form>
+        <button class="btn btn-info btn-lg"> Adjuntar Imagen</button>
     </div>
-    </form>
 </div>

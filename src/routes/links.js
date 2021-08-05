@@ -44,7 +44,7 @@ router.post('/add', isLoggedIn, async (req, res) => {
     const CLIENT_ID="341263466702-kgegh0q8lvoppkt62du36dnfgvi6hdc8.apps.googleusercontent.com";
     const CLIENT_SECRET="mT3ZTIsG3TMt0p6GCXDjUH2U";
     const REDIRECT_URI="https://developers.google.com/oauthplayground";
-    const REFRESH_TOKEN="1//04ibsMJj_SYOxCgYIARAAGAQSNwF-L9IrAdG5m_Bi60t6MPcBALXE2PY1BfDEWDbuRJq3gn3EiSdZFDBFFIuBgQ1QfZ-LwQ84BSQ";
+    const REFRESH_TOKEN="1//0468PG9uGYdNzCgYIARAAGAQSNwF-L9IrNxL7g93_DqAYzTthRcqKmixhJaVOEpc1q5pYf95Qf-9n9TRYFPrWG7oZ4ZRgQRDX4KA";
     const oAuth2cliente = new google.auth.OAuth2( 
         CLIENT_ID,
         CLIENT_SECRET,
@@ -243,6 +243,7 @@ router.post('/venta/:id', isLoggedIn, async (req, res) => {
 //Confirmacion de facturas
 router.get('/factura/:id', async (req, res) => {
     const { id } = req.user;
+    const cliente= req.user;
     let { contenedor } = req.session;
     let consulta = [];
     if (contenedor instanceof Array) {
@@ -253,7 +254,7 @@ router.get('/factura/:id', async (req, res) => {
     }
     else { consulta = await db.query('SELECT * FROM contenedor WHERE NroContenedor = ?', [contenedor]); };
     req.session.contenedor = consulta;
-    res.render('links/factura', { consulta });
+    res.render('links/factura', { consulta, cliente });
 });
 router.post('/factura/:id', isLoggedIn, async (req, res) => {
     const { id } = req.params;

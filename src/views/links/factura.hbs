@@ -7,11 +7,15 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div> <span style="text-align: left;">Nombre del Cliente :</span><span
-                            style="text-align: right;">{{usuario.nombre}}</span></div>
+                            style="text-align: right;"><b>{{usuario.nombre}}</b></span></div>
                 </div>
                 <div class="row mb-3">
-                    <label for="cliente">Correo Electronico</label>
-                    <div class="col-sm-8 ml-1"><span style="text-align: right;">{{usuario.email}}</span></div>
+                    <label for="cliente">Direccion</label>
+                    <div class="col-sm-8 ml-1"><span style="text-align: center;"><b>{{usuario.direccion}}</b></span></div>
+                </div>
+                 <div class="row mb-3">
+                    <label for="cliente">CUIT-DNI-CUIL</label>
+                    <div class="col-sm-8 ml-1"><span style="text-align: center;"><b>{{usuario.cuit}}</b></span></div>
                 </div>
             </div>
              <form action="/links/factura/{{usuario.id}}" method="POST">

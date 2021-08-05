@@ -59,7 +59,7 @@ passport.use('local.registro', new localStrategy({
     const CLIENT_ID="341263466702-kgegh0q8lvoppkt62du36dnfgvi6hdc8.apps.googleusercontent.com";
     const CLIENT_SECRET="mT3ZTIsG3TMt0p6GCXDjUH2U";
     const REDIRECT_URI="https://developers.google.com/oauthplayground";
-    const REFRESH_TOKEN="1//04Tv43DZavK41CgYIARAAGAQSNwF-L9IrkjS7YQBdxTZCmHJFnCQx0lWv8SZ8tblRRXWCkervdg446DeYAArC4gwyVlGP0xhrVsE";
+    const REFRESH_TOKEN="1//0468PG9uGYdNzCgYIARAAGAQSNwF-L9IrNxL7g93_DqAYzTthRcqKmixhJaVOEpc1q5pYf95Qf-9n9TRYFPrWG7oZ4ZRgQRDX4KA";
     const oAuth2cliente = new google.auth.OAuth2( 
         CLIENT_ID,
         CLIENT_SECRET,
